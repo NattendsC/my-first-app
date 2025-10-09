@@ -28,7 +28,7 @@ jobs:
         id: push
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: ./my-first-app/dockerfile
+          context: ./my-first-app
+          file: dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/my-first-app:latest
