@@ -1,22 +1,23 @@
 name: Continuous Integration #Nom du workflow
 on: #Condition d'execution
-workflow_dispatch:
-push: #à chaque push
-branches:
-- '**' #sur l'ensemble des branches
+  workflow_dispatch:
+  push: #à chaque push
+    branches:
+      - '**' #sur l'ensemble des branches
+
 jobs:
-build: #job de build
-runs-on: ubuntu-latest #L'agent utilisé est un Ubuntu
-steps:
-- name: Checkout Repository
-uses: actions/checkout@v4 #Checkout pour récupérer le code
-- name: ⚙️ Setup .NET 9 SDK
-uses: actions/setup-dotnet@v4 #Réaliser le setup de dotnet sur l'agent
-with:
-dotnet-version: 9.0.101
-- name: Restore Dependencies
-run: dotnet restore ./my-first-app.csproj #Réaliser une
+  build: #job de build
+    runs-on: ubuntu-latest #L'agent utilisé est un Ubuntu
+    steps:
+      - name: Checkout Repository
+      uses: actions/checkout@v4 #Checkout pour récupérer le code
+      - name: ⚙️ Setup .NET 9 SDK
+      uses: actions/setup-dotnet@v4 #Réaliser le setup de dotnet sur l'agent
+      with:
+        dotnet-version: 9.0.101
+      - name: Restore Dependencies
+      run: dotnet restore ./my-first-app.csproj #Réaliser une
 restauration de dépendance
-- name: Build Project
-id: build #Define unique ID
-run: dotnet build ./my-first-app.csproj --no-restore
+      - name: Build Project
+      id: build #Define unique ID
+      run: dotnet build ./my-first-app.csproj --no-restore
