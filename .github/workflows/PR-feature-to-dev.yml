@@ -1,4 +1,4 @@
-name: CI - Feature to Dev
+name: CI - PR feature to dev
 
 # Déclenchement UNIQUEMENT sur Pull Request vers dev
 on:
@@ -7,53 +7,50 @@ on:
       - dev
     types: [opened, synchronize, reopened]
 
-# Variables d'environnement
-env:
-  NODE_VERSION: '18'
 
 jobs:
   build:
-    name: Build & Compile
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+
+      - name: ⚙️ Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build application
-        run: npm run build
+          dotnet-version: 9.0.101
+
+      - name: Restore Dependencies
+        run: dotnet restore ./my-first-app.csproj
+
+      - name: Build Project
+        id: build
+        run: dotnet build ./my-first-app.csproj --no-restore
+
 
   unit-tests:
-    name: Unit Tests
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '18'
           cache: 'npm'
-      
+          cache-dependency-path: './package-lock.json' 
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run unit tests
         run: npm test
 
   snyk-sca-critical:
-    name: SCA - Dependencies (CRITICAL)
+    name: SCA (CRITICAL) via SNYK
     runs-on: ubuntu-latest
     
     steps:
@@ -63,7 +60,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '18'
       
       - name: Install dependencies
         run: npm ci
@@ -77,7 +74,7 @@ jobs:
           args: --severity-threshold=critical
 
   code-format:
-    name: Code Format Check
+    name: Code Formatting (linting)
     runs-on: ubuntu-latest
     continue-on-error: true
     
@@ -88,7 +85,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '18'
           cache: 'npm'
       
       - name: Install dependencies
@@ -101,7 +98,7 @@ jobs:
         run: npm run lint
 
   snyk-sast:
-    name: SAST - Code Analysis (HIGH/CRITICAL)
+    name: SAST (HIGH/CRITICAL) via SNYK
     runs-on: ubuntu-latest
     continue-on-error: true
     

@@ -1,0 +1,24 @@
+{
+  "name": "my-first-app",
+  "version": "1.0.0",
+  "description": "Mon projet Node.js pour CI",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "format:check": "prettier --check .",
+    "lint": "eslint ."
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "eslint": "^8.57.1",
+    "prettier": "^3.6.2"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
