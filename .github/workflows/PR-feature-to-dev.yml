@@ -39,15 +39,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'   # ou la version que tu utilises
+          node-version: '18'
           cache: 'npm'
-          cache-dependency-path: './package-lock.json'  # Si ton package-lock.json est à la racine
+          cache-dependency-path: './package-lock.json' 
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run unit tests
-        run: npm test -- --passWithNoTests
+        run: npm test
 
   snyk-sca-critical:
     name: SCA (CRITICAL) via SNYK
