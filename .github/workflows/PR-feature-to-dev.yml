@@ -13,24 +13,22 @@ env:
 
 jobs:
   build:
-    name: Build & Compile
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+
+      - name: ⚙️ Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build application
-        run: npm run build
+          dotnet-version: 9.0.101
+
+      - name: Restore Dependencies
+        run: dotnet restore ./my-first-app.csproj
+
+      - name: Build Project
+        id: build
+        run: dotnet build ./my-first-app.csproj --no-restore
 
   unit-tests:
     name: Unit Tests
