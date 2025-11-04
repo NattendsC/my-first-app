@@ -27,7 +27,7 @@ jobs:
         id: build
         run: dotnet build ./my-first-app.csproj --no-restore
 
-jobs:
+
   unit-tests:
     runs-on: ubuntu-latest
 
