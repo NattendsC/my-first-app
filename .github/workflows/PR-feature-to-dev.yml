@@ -34,6 +34,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'   # ou la version que tu utilises
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'  # Si ton package-lock.json est à la racine
 
       - name: Install dependencies
         run: npm ci
